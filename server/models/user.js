@@ -1,4 +1,7 @@
 'use strict';
+
+const { passwordHasher } = require('../helpers/index')
+
 const {
   Model
 } = require('sequelize');
@@ -10,16 +13,40 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+     User.hasMany(models.Product, {foreignKey:'UserId'})
     }
   };
   User.init({
-    full_name: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING
+    full_name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+        isEmail: true
+      }
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+        len: [8,50]
+      }
+    },
   }, {
     sequelize,
     modelName: 'User',
   });
+  User.beforeCreate((instances, options) => {
+    instances.password = passwordHasher(instances.password)
+  })
+
   return User;
 };
