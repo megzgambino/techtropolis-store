@@ -17,14 +17,12 @@ module.exports = (sequelize, DataTypes) => {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
       validate: {
         notEmpty: true
       }
     },
     image_url: {
       type: DataTypes.STRING,
-      allowNull: false,
       validate: {
         notEmpty: true,
         isUrl: true
@@ -36,7 +34,6 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         isInt: true,
         notEmpty: true,
-        isEmail: true,
         min: 0,    
         isDecimal: false
       }
@@ -47,7 +44,6 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         isInt: true,
         notEmpty: true,
-        isEmail: true,
         min: 0,    
         isDecimal: false
       }
